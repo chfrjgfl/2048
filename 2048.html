@@ -1,0 +1,184 @@
+<!doctype html>
+<body>
+<style>
+  table {
+    width: 400px;
+    height: 400px;
+    border: 5px solid brown;
+    border-radius: 8px;
+    background-color: beige;
+    font-family: 'helvetica neue', helvetica, arial, sans-serif, bold;
+    font-size: 40px;
+    padding: 3px;
+    table-layout: fixed;
+
+  }
+  td {
+    width: 60px;
+    height: 60px;
+    border: 3px solid brown;
+    border-radius: 5px;
+    background-color: pink;
+    text-align: center;
+  }
+  .smaller {
+    font-size: smaller;
+  }
+
+  #reset {
+    position:fixed;
+    top: 430px;
+    left: 155px;
+    font-size: 20px;
+  }
+</style>
+
+<table>
+  <tr> 
+    <td> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
+  </tr>
+  <tr> 
+    <td> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
+  </tr>
+  <tr> 
+    <td> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
+  </tr>
+  <tr> 
+    <td> </td>
+    <td> </td>
+    <td> </td>
+    <td> </td>
+  </tr>
+</table>
+
+<button id="reset">New Game</button>
+
+
+  
+
+<script>
+let tab = document.querySelector("table");
+let box = [];
+initBox();
+showBox();
+
+//----- initial setting + random placing 2 two's
+function initBox() {
+for(let i=0; i<4; i++) {
+  box[i] = [];
+  for(let j=0; j<4; j++) {
+    box[i][j] = 0;
+  }  
+}
+newCell(0);
+newCell(0);
+}
+//-----
+//---- random placing 2 or 4; i4 = probability of 4
+function newCell(i4) {
+  let i = 0;
+  let x = Math.floor(Math.random()*4);
+  let y = Math.floor(Math.random()*4);
+  while (box[x][y] > 0) {
+    i++;
+    if (i>16) {
+      alert("Game Over!");
+      return false;
+    }
+    y++;
+    if (y>3) {
+      y = 0;
+      x = (x+1) % 4;
+    }
+  }
+  box[x][y] = Math.random()>i4? 2: 4;
+}
+//-------
+//----- also makes smaller font for bigger numbers
+function showBox() {
+  let s = "";
+  for(let i=0; i<4; i++) {
+    for(let j=0; j<4; j++) {
+      tab.rows[i].cells[j].innerHTML =
+        (box[i][j]==0)? s = "": box[i][j];
+      if (box[i][j]>1000) 
+        tab.rows[i].cells[j].className = "smaller";
+      else tab.rows[i].cells[j].className = "";
+    }  
+  }
+}   
+//------
+//------ defines co-efs for directions
+addEventListener('keydown', function(event) {
+   switch(event.code) {
+    case 'ArrowLeft':
+      moveBox(0, 1, 0, 0, 0, 1);      
+      break;
+    case 'ArrowRight':
+      moveBox(0, 1, 0, 1, 0, -1);      
+      break;
+    case 'ArrowUp':
+      moveBox(0, 0, 1, 0, 1, 0);      
+      break;
+    case 'ArrowDown':
+      moveBox(1, 0, -1, 0, 1, 0);      
+      break;      
+  } 
+});
+//-------
+//------ reset game
+reset.onclick = function(event) {
+    initBox();
+    showBox();
+  };
+//-------
+//----- main func; c1-c6 = coefs depending of direction
+function moveBox(c1, c2, c3, c4, c5, c6) {
+let i, j, k, m;
+  let moved = false;  //if anything moved, then place new element
+  let term=[];      //
+ 
+  for(i=0; i<4; i++) { 
+        term = []; 
+        for(j=0; j<4; j++) { 
+          k = 3*c1+i*c2+j*c3;  
+          m = 3*c4+i*c5+j*c6;
+          if(box[k][m]>0) {   
+            term.push(box[k][m]);  
+            if(!moved&&j>0&&box[k-c3][m-c6]==0) moved = true;
+          }        
+        }
+        if (term.length>0) {
+          if (term.length>1) {
+            for(j=1; j<term.length; j++) {
+              if (term[j-1] == term[j]) {
+                term[j-1] *=2;
+                term.splice(j, 1);
+                moved = true;
+              }
+            }
+          }
+        for (j=0; j<4; j++) {          
+          k = 3*c1+i*c2+j*c3;  
+          m = 3*c4+i*c5+j*c6;
+          box[k][m] = (j<term.length)? term[j]: 0;
+        }
+        }
+      }  
+  if (moved) newCell(0.3);
+  showBox();
+}
+//-----
+</script>
+</body>
+
+
