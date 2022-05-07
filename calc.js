@@ -57,8 +57,8 @@ var calc = function (expression) {
     }
 
     let regPar = /\(([-+*/\d\.\s]+)\)/;
-    let regMulDiv = /(-?\d+(\.\d+)?)\s*([*/])\s*(-?\d+(\.\d+)?)/g;
-    let regSubAdd = /(-?\d+(\.\d+)?)\s*([-+])\s*(-?\d+(\.\d+)?)/g; 
+    let regMulDiv = /(-?\d+(\.\d+)?)\s*([*/])\s*(-?\d+(\.\d+)?)/;
+    let regSubAdd = /(-?\d+(\.\d+)?)\s*([-+])\s*(-?\d+(\.\d+)?)/; 
     let exp = expression;
   
     while (/\(/.test(exp)) {
