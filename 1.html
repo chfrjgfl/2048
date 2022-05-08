@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Заголовок документа</title>
+    <style>
+     
+    </style>
+  </head>
+  <body>
+    <a href="" class="button" target="_blank">Click Here</a>
+  </body>
+</html>
+<script>
+let aa = document.querySelector('.button');
+let s = "";
+for(let i=500; i<1000; i++) {
+    for (let y=14; y<23; y++) {
+        for (let m=1; m<13; m++) {
+            let ms = m<10? ""+"0"+m: ""+m;
+            s = "https://www.toyota-tech.eu/td/td3ewd/pgm/standaloneEWD.html?pubNo=EM3" +
+                i + "E_v1;ewd_type=intro;ewd=INTRO01;term=20" + 
+                y + ms + ";vwlang=EN;ewdpath=/td3ewd";
+                aa.href = s;
+                let q = confirm (`i = ${i}  20${y}  `+ms+"");
+                if (q) aa.click();
+        }
+    }
+}
+
+</script>
