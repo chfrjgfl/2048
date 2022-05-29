@@ -8,14 +8,14 @@ const rates = xlsx.parse(`${__dirname}/price.csv`);
 const uahToEur = +rates[0].data[1][0].split(",")[2].replace(/\"/g, "");
 const uahToUsd = +rates[0].data[2][0].split(",")[2].replace(/\"/g, "");
 
-let manufacturers = [  {brand:"Audison", id:3}, 
-                        {brand:"Hertz", id:4},
-                        {brand:"Focal", id:1},
-                        {brand:"Alpine", id:22},
-                        {brand:"Pandora", id:17},
-                        {brand:"Pandect", id:36},
+let manufacturers = [  {brand:"Audison", id:"3"}, 
+                        {brand:"Hertz", id:"4"},
+                        {brand:"Focal", id:"1"},
+                        {brand:"Alpine", id:"22"},
+                        {brand:"Pandora", id:"17"},
+                        {brand:"Pandect", id:"36"},
                     ];
-let manID = manufacturers.map((item)=>item.id.toString());  
+let manID = manufacturers.map((item)=>item.id);  
 let manBr = manufacturers.map((item)=>item.brand);                 
 
 let prods = [];             // products in base
@@ -111,11 +111,12 @@ function alike(s1, s2) {
     }
     return (!a1.includes("D")||a2.includes("D"));
 
-       //  APK 130 Kit 2-Way System <-> Prima APK 130
-        //  ECX 100.5 2-Way coaxial <-> ECX 100
-     // HCP 1D <-> HCP 1Dk
-   
-      //  Bit Ten D Signal interface processor <-> Bit Ten
+        //   func resolves cases like:
+       //  APK 130 Kit 2-Way System <-> Prima APK 130    true
+        //  ECX 100.5 2-Way coaxial <-> ECX 100         true
+        // HCP 1D <-> HCP 1Dk                           false
+      //  Bit Ten D Signal interface processor <-> Bit Ten     false
+      // Bit Ten D Signal interface processor <-> Bit Ten D    true
 }
 
 function calcPrice(prod) {          // will add more rules
@@ -135,8 +136,8 @@ function calcPrice(prod) {          // will add more rules
 }
 
 function getData(fromFile, fromArray,           // source - file or array
-                toArray,               // output array of objects {brand, model,price,checked}
-                condition1, condition2,   //  filters for choosing rows
+                toArray,               // output array of objects {brand, model, price, checked}
+                condition1, condition2,   //  rows selectors
                 getBrandModel,          // parsing brand & model
                  iPrice) {              // index of cell w/price
 
@@ -156,10 +157,10 @@ function getData(fromFile, fromArray,           // source - file or array
 async function getPanda () {
     const request = {
              // The ID of the spreadsheet to retrieve data from.
-             spreadsheetId: '1vY6qBWb8lXiaheyzslIYWHzwekUam4XKhKf_Pg3Jt5Q',  
+             spreadsheetId: '------',  
              // The A1 notation of the values to retrieve.
              range: 'B10:D50',  
-             key: 'AIzaSyAaA2zFLxMs2ekKOIZs1MddR_wTSmqiB5k',
+             key: '+++++++++++',
            };
     
     try {       
